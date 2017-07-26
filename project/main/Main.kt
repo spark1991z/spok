@@ -25,10 +25,8 @@ class Main private constructor() {
         val PROJECT_NAME = "Spok"
         val VERSION_CORE = 0.1
         val VERSION_CODE = 0.1
-        val VERSION_BUILD = 2.0
+        val VERSION_BUILD = 2.1
         val RZD = "---------------------------"
-
-
 
         /**
          * Функция main
@@ -46,7 +44,7 @@ class Main private constructor() {
          * Функция start
          * Запуск сервисов
          */
-        fun start(){
+        @JvmStatic fun start(){
            println("Starting services...")
         }
 
@@ -54,7 +52,7 @@ class Main private constructor() {
          * Функция stop
          * Остановка сервисов
          */
-        fun stop(){
+        @JvmStatic fun stop(){
             println("Stoping services...")
         }
 
@@ -62,7 +60,7 @@ class Main private constructor() {
          * Функция restart
          * Перезапуск сервисов
          */
-        fun restart(){
+        @JvmStatic fun restart(){
             println("Restarting...")
             stop()
             start()
@@ -72,7 +70,7 @@ class Main private constructor() {
          * Функция shutdown
          * Остановка сервисов и завершение выполнения программы
          */
-       fun shutdown(){
+        @JvmStatic fun shutdown(){
             stop()
             println("Program will be shutdowned..\n" +
                     "Bye.")
