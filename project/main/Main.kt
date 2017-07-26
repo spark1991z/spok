@@ -5,7 +5,7 @@ package project.main
  *
  * Класс Main
  */
-class Main private constructor() {
+final class Main private constructor() {
 
     /**
      * Переопределение функции toString
@@ -25,7 +25,7 @@ class Main private constructor() {
         val PROJECT_NAME = "Spok"
         val VERSION_CORE = 0.1
         val VERSION_CODE = 0.1
-        val VERSION_BUILD = 2.1
+        val VERSION_BUILD = 2.2
         val RZD = "---------------------------"
 
         /**
@@ -78,5 +78,4 @@ class Main private constructor() {
         }
     }
 }
-
 
