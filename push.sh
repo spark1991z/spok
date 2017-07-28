@@ -1,5 +1,5 @@
 #!/bin/bash
-for x in $(ls -a); do 
+for x in $(ls); do 
 	git add $x;
 done;
 c="update"
