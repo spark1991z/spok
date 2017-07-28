@@ -1,18 +1,16 @@
 package project.main
+
 /**
- * Small Project On Kotlin
- * Небольшой Проект На Котлине
- *
  * Класс Main
  */
-final class Main private constructor() {
+class Main private constructor() {
 
     /**
      * Переопределение функции toString
      * Возвращает строку с названием проекта и версии
      */
     override fun toString(): String {
-        return "$PROJECT_NAME (v$VERSION_CORE.$VERSION_CODE, build $VERSION_BUILD)"
+        return "$PROJECT_NAME $VERSION_CORE.$VERSION_CODE-$VERSION_BUILD #$VERSION_INCREMENT ($SYSTEM_OS_NAME, $SYSTEM_OS_ARCH)"
     }
 
     /**
@@ -20,13 +18,27 @@ final class Main private constructor() {
      */
     companion object {
 
-        private var main: Main? = null
+        private var main:Main ?= null
 
-        val PROJECT_NAME = "Spok"
-        val VERSION_CORE = 0.1
-        val VERSION_CODE = 0.1
-        val VERSION_BUILD = 2.2
-        val RZD = "---------------------------"
+        private var PROJECT_NAME:String ?= null
+        private var VERSION_CORE:Double ?= null
+        private var VERSION_CODE:Int ?= null
+        private var VERSION_BUILD:Double ?= null
+        private var VERSION_INCREMENT:Int ?= null
+        private var RZD = "---------------------------"
+        private var SYSTEM_OS_NAME:String ?= null
+        private var SYSTEM_OS_ARCH:String ?= null
+
+        init {
+            PROJECT_NAME = "Spok"
+            VERSION_CORE = 0.1
+            VERSION_CODE = 7
+            VERSION_BUILD = 29.0
+            VERSION_INCREMENT = 4
+            SYSTEM_OS_NAME = System.getProperty("os.name")
+            SYSTEM_OS_ARCH = System.getProperty("os.arch")
+        }
+
 
         /**
          * Функция main
@@ -44,7 +56,7 @@ final class Main private constructor() {
          * Функция start
          * Запуск сервисов
          */
-        @JvmStatic fun start(){
+        fun start(){
            println("Starting services...")
         }
 
@@ -52,7 +64,7 @@ final class Main private constructor() {
          * Функция stop
          * Остановка сервисов
          */
-        @JvmStatic fun stop(){
+        fun stop(){
             println("Stoping services...")
         }
 
@@ -60,7 +72,7 @@ final class Main private constructor() {
          * Функция restart
          * Перезапуск сервисов
          */
-        @JvmStatic fun restart(){
+        fun restart(){
             println("Restarting...")
             stop()
             start()
@@ -70,9 +82,9 @@ final class Main private constructor() {
          * Функция shutdown
          * Остановка сервисов и завершение выполнения программы
          */
-        @JvmStatic fun shutdown(){
+        fun shutdown(){
             stop()
-            println("Program will be shutdowned..\n" +
+            println("Program will be shutdowned.\n" +
                     "Bye.")
             System.exit(0)
         }
