@@ -1,4 +1,7 @@
 package project.log
+
+import java.text.SimpleDateFormat
+
 /**
  * @author spark1991z
  */
@@ -6,36 +9,25 @@ class Log private constructor() {
 
     companion object {
 
-        private var INIT_TIMESTAMP: Long? = null
-        private var DEBUG: Boolean
+        private var sdf: SimpleDateFormat = SimpleDateFormat("yyy-MM-dd@HH:mm:ss")
+        private var INIT_TIMESTAMP: Long = System.currentTimeMillis()
+        var DEBUG: Boolean = false
 
-        init {
-            INIT_TIMESTAMP = System.currentTimeMillis()
-            DEBUG = false
+        private fun log(type: String, service: String, msg: String) {
+            println("[$type] [$service] $msg")
         }
 
-        private fun log(type: String?=null, msg: String?=null) {
-            println("[$type] $msg")
+        fun info(service: String, msg: String) {
+            log("INFO", service, msg)
         }
 
-        fun isDebug(debug:Boolean){
-            DEBUG=debug
+        fun debug(service: String, msg: String) {
+            if (DEBUG)
+                log("DEBUG", service, msg)
         }
 
-        fun isDebug():Boolean{
-            return DEBUG
-        }
-
-        fun info(msg: String) {
-            log("INFO", msg)
-        }
-
-        fun error(msg: String) {
-            log("ERROR", msg)
-        }
-
-        fun debug(msg: String) {
-            if (DEBUG) log("DEBUG", msg)
+        fun error(service: String, msg: String) {
+            log("ERROR", service, msg)
         }
     }
 }
