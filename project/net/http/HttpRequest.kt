@@ -1,5 +1,6 @@
 package project.net.http
 
+import project.crypto.MD5
 import project.log.Loggable
 import java.io.InputStream
 import java.net.Socket
@@ -43,6 +44,7 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
 
     private var headers: Hashtable<String, String> = Hashtable<String, String>()
     private var query: Hashtable<String, String> = Hashtable<String, String>()
+    private var cookies:Hashtable<String,String> = Hashtable<String,String>()
 
     init {
         init()
@@ -59,6 +61,7 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
         }
         return bf
     }
+
 
     private fun init() {
         /**
@@ -96,15 +99,18 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
                 return
             }
             method = h[0]
-            var x: Int = h[1].indexOf("?")
+            var x: Int = h[1].indexOf("%")
             if (x > 0) {
                 try {
                     var uri: URI = URI(h[1])
                     path = uri.path
-                    for (kp in uri.query.split("&")) {
-                        var kv: List<String> = kp.split("=")
-                        debug("Query${method} <- ${kv[0]}=${kv[1]}")
-                        query.put(kv[0], kv[1])
+                    var x2:Int = h[1].indexOf("?")
+                    if(x2>0){
+                        for (kp in uri.query.split("&")) {
+                            var kv: List<String> = kp.split("=")
+                            debug("Query <- ${kv[0]}=${kv[1]}")
+                            query.put(kv[0], kv[1])
+                        }
                     }
                 } catch (e: Exception) {
                     ready = false
@@ -130,6 +136,23 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
                 res.printError("This server requires use of the HTTP/${HttpResponse.PROTOCOL_VERSION} protocol.")
                 res.close()
                 return
+            }
+            //Cookies
+            var v:String? = header("Cookie")
+            if(v!=null){
+                headers.remove("Cookie")
+                for(cookie in v.split("; ")){
+                    var kv:List<String> = cookie.split("=")
+                    debug("Cookie <- ${kv[0]}=${kv[1]}")
+                    cookies.put(kv[0],kv[1])
+                }
+            }
+            //Cookie session_id
+            var c:String? = cookie("session_id")
+            if(c==null){
+                var ua:String? = header("User-Agent")
+                if(ua!=null)
+                    res.cookie("session_id",MD5.digest(ua),null,60*60,null,"/",false,true)
             }
         /**
          * POST/PUT Query
@@ -164,17 +187,16 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
                 var query_arr: List<String> = q.split("&")
                 for (kp in query_arr) {
                     var kv: List<String> = q.split("=")
-                    debug("Query${method} <- ${kv[0]}=${kv[1]}")
+                    debug("Query <- ${kv[0]}=${kv[1]}")
                     query.put(kv[0], kv[1])
                 }
             }
+    }
 
-
-
-
-
-
-
+    fun cookie(key:String):String?{
+        if(cookies.containsKey(key))
+            return cookies.get(key)
+        return null
     }
 
     fun read():Int{

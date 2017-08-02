@@ -23,8 +23,6 @@ class HttpResponse(private var socket: Socket) : Loggable {
         /**
          * Base
          */
-        //Informational
-        var STATUS_100_CONTINUE: Int = 100
         //Success
         var STATUS_200_OK: Int = 200
         var STATUS_204_NO_CONTENT: Int = 204
@@ -118,6 +116,21 @@ class HttpResponse(private var socket: Socket) : Loggable {
         headers.put(name, header)
     }
 
+    fun cookie(key:String, value:String,expires:Date?,path:String){
+        cookie(key,value,expires,9,null,path,false,true)
+    }
+
+    fun cookie(key:String, value:String,expires:Date?,maxAge:Long,domain:String?,path:String,secure:Boolean,httpOnly:Boolean){
+        var v:String = value
+        if(expires!=null) v+="; expires=$expires"
+        if(maxAge>0) v+="; max-age=$maxAge"
+        if(domain!=null) v+="; domain=$domain"
+        v+="; path=$path"
+        if(secure) v+="; secure"
+        if(httpOnly) v+="; httpOnly"
+        header("Set-Cookie",key,v)
+
+    }
 
     fun connection(connection: Int) {
         if (connection_names.containsKey(connection))
@@ -175,8 +188,8 @@ class HttpResponse(private var socket: Socket) : Loggable {
     }
 
     fun write(p0: Int) {
-        if(socket.isClosed()) return
         sendHeaders()
+        if(socket.isClosed()) return
         socket.getOutputStream().write(p0)
     }
 

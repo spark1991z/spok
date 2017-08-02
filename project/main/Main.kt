@@ -14,9 +14,9 @@ class Main private constructor() : Loggable {
 
         private var main: Main? = null
         internal var PROJECT_NAME: String = "Spok"
-        internal var VERSION_CORE: Double = 0.1
-        internal var VERSION_CODE: Int = 8
-        internal var VERSION_BUILD: Double = 2.41
+        internal var VERSION_CORE: Double = 0.8
+        internal var VERSION_CODE: Int = 2
+        internal var VERSION_BUILD: Double = 121.6
         internal var RZD: String = "------------------------------"
         internal var SYSTEM_OS_NAME: String = System.getProperty("os.name")
         internal var SYSTEM_OS_ARCH: String = System.getProperty("os.arch")

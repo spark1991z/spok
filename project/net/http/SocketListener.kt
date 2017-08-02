@@ -1,17 +1,17 @@
 package project.net.http
 
 import project.log.Log
+import project.log.Loggable
 import java.net.Socket
 
-class SocketListener(private var socket: Socket, private var listener: ServletListener?) : Runnable {
-
-    companion object {
-        private var LOG_SERVICE = javaClass.simpleName
-    }
-
+/**
+ * @author spark1991z
+ */
+class SocketListener(private var socket: Socket, private var listener: ServletListener?) : Runnable,Loggable {
 
     @Synchronized override fun run() {
-        Log.debug(javaClass.simpleName, "Connected $socket")
+
+        debug( "Connected $socket")
         var res: HttpResponse = HttpResponse(socket)
         var req: HttpRequest = HttpRequest(socket, res)
         if (!req.ready()) return
@@ -20,6 +20,5 @@ class SocketListener(private var socket: Socket, private var listener: ServletLi
         } else res.println("It's work!")
         res.close()
     }
-
 
 }

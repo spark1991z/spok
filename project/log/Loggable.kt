@@ -1,5 +1,8 @@
 package project.log
 
+/**
+ * @author spark1991z
+ */
 interface Loggable {
 
     fun info(msg: String) {

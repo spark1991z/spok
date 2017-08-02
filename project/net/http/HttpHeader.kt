@@ -2,6 +2,9 @@ package project.net.http
 
 import java.util.*
 
+/**
+ * @author spark1991z
+ */
 class HttpHeader {
 
     companion object {
