@@ -2,7 +2,7 @@ package project.net.http
 
 import java.util.*
 
-abstract class HttpServlet(protected var name:String) {
+abstract class HttpServlet(protected var name: String) {
 
     private var methods: Vector<String> = Vector<String>()
 
@@ -11,12 +11,12 @@ abstract class HttpServlet(protected var name:String) {
         add("POST")
     }
 
-    fun add(method:String){
+    fun add(method: String) {
         if (!HttpRequest.checkMethod(method))
             throw IllegalArgumentException("Unknown method: ${method}")
         if (this.methods.contains(method))
             throw IllegalArgumentException("Duplicate method: ${method}")
-        this.methods.add(method)
+        methods.add(method)
     }
 
     fun service(req: HttpRequest, res: HttpResponse) {
@@ -40,26 +40,26 @@ abstract class HttpServlet(protected var name:String) {
             res.close()
             return
         }
-        var path:String = req.path().replace("/servlet/$name","")
-        if(path.isEmpty()) path = "/"
+        var path: String = req.path().replace("/servlet/$name", "")
+        if (path.isEmpty()) path = "/"
         when (req.method()) {
-            HttpRequest.METHOD_GET -> doGet(req, res,path)
-            HttpRequest.METHOD_POST -> doPost(req, res,path)
-            HttpRequest.METHOD_PUT -> doPut(req, res,path)
-            HttpRequest.METHOD_HEAD -> doHead(req, res,path)
+            HttpRequest.METHOD_GET -> doGet(req, res, path)
+            HttpRequest.METHOD_POST -> doPost(req, res, path)
+            HttpRequest.METHOD_PUT -> doPut(req, res, path)
+            HttpRequest.METHOD_HEAD -> doHead(req, res, path)
         }
     }
 
-    fun name():String{
+    fun name(): String {
         return name
     }
 
-    fun redirect(path:String,res:HttpResponse){
+    fun redirect(path: String, res: HttpResponse) {
         res.redirect("/servlet/$name/$path")
     }
 
-    abstract fun doGet(req: HttpRequest, res: HttpResponse,servletPath:String)
-    abstract fun doPost(req: HttpRequest, res: HttpResponse,servletPath:String)
-    abstract fun doPut(req: HttpRequest, res: HttpResponse,servletPath:String)
-    abstract fun doHead(req: HttpRequest, res: HttpResponse,servletPath:String)
+    abstract fun doGet(req: HttpRequest, res: HttpResponse, servletPath: String)
+    abstract fun doPost(req: HttpRequest, res: HttpResponse, servletPath: String)
+    abstract fun doPut(req: HttpRequest, res: HttpResponse, servletPath: String)
+    abstract fun doHead(req: HttpRequest, res: HttpResponse, servletPath: String)
 }

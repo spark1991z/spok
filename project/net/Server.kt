@@ -48,7 +48,7 @@ abstract class Server(private var port: Int) : Runnable {
         start()
     }
 
-    fun runnable():Boolean{
+    fun runnable(): Boolean {
         return runnable
     }
 

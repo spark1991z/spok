@@ -49,7 +49,7 @@ class HttpResponse(private var socket: Socket) : Loggable {
             connection_names.put(CONNECTION_CONTINUE, "Continue")
             connection_names.put(CONNECTION_CLOSE, "Close")
             connection_names.put(CONNECTION_UPGRADE, "Upgrade")
-            connection_names.put(CONNECTION_KEEP_ALIVE,"Keep-Alive")
+            connection_names.put(CONNECTION_KEEP_ALIVE, "Keep-Alive")
 
             status_msg.put(STATUS_200_OK, "OK")
             status_msg.put(STATUS_204_NO_CONTENT, "No Content")
@@ -116,25 +116,25 @@ class HttpResponse(private var socket: Socket) : Loggable {
         headers.put(name, header)
     }
 
-    fun cookie(key:String, value:String,expires:Date?,path:String){
-        cookie(key,value,expires,9,null,path,false,true)
+    fun cookie(key: String, value: String, expires: Date?, path: String) {
+        cookie(key, value, expires, 9, null, path, false, true)
     }
 
-    fun cookie(key:String, value:String,expires:Date?,maxAge:Long,domain:String?,path:String,secure:Boolean,httpOnly:Boolean){
-        var v:String = value
-        if(expires!=null) v+="; expires=$expires"
-        if(maxAge>0) v+="; max-age=$maxAge"
-        if(domain!=null) v+="; domain=$domain"
-        v+="; path=$path"
-        if(secure) v+="; secure"
-        if(httpOnly) v+="; httpOnly"
-        header("Set-Cookie",key,v)
+    fun cookie(key: String, value: String, expires: Date?, maxAge: Long, domain: String?, path: String, secure: Boolean, httpOnly: Boolean) {
+        var v: String = value
+        if (expires != null) v += "; expires=$expires"
+        if (maxAge > 0) v += "; max-age=$maxAge"
+        if (domain != null) v += "; domain=$domain"
+        v += "; path=$path"
+        if (secure) v += "; secure"
+        if (httpOnly) v += "; httpOnly"
+        header("Set-Cookie", key, v)
 
     }
 
-    fun redirect(path:String){
+    fun redirect(path: String) {
         status(HttpResponse.STATUS_303_SEE_OTHER)
-        header("Location","$path")
+        header("Location", "$path")
         close()
     }
 
@@ -158,36 +158,36 @@ class HttpResponse(private var socket: Socket) : Loggable {
     private fun sendHeaders() {
         if (!sendHeaders) {
             debug("HTTP/$PROTOCOL_VERSION $status ${status_msg.get(status)}")
-            if(socket.isClosed()) return
+            if (socket.isClosed()) return
             socket.getOutputStream().write("HTTP/1.1 $status ${status_msg.get(status)}\r\n".toByteArray())
-            for(key in headers.keys()){
-                var header:HttpHeader? = headers.get(key)
-                if(header!!.mode()==HttpHeader.MODE_VALUES){
-                    if(header.hasMore()){
-                        for(value in header.values()){
+            for (key in headers.keys()) {
+                var header: HttpHeader? = headers.get(key)
+                if (header!!.mode() == HttpHeader.MODE_VALUES) {
+                    if (header.hasMore()) {
+                        for (value in header.values()) {
                             debug("$key: $value")
-                            if(socket.isClosed()) return
+                            if (socket.isClosed()) return
                             socket.getOutputStream().write("$key: $value\r\n".toByteArray())
                         }
                         continue
                     }
                     debug("$key: ${header.value()}")
-                    if(socket.isClosed()) return
+                    if (socket.isClosed()) return
                     socket.getOutputStream().write("$key: ${header.value()}\r\n".toByteArray())
                     continue
                 }
-                var value:String = ""
-                var first:Boolean = true
-                for(k in header.values()){
-                    if(!first) value+=";"
+                var value: String = ""
+                var first: Boolean = true
+                for (k in header.values()) {
+                    if (!first) value += ";"
                     else first = false
                     value += "$k=${header.value(k)}"
                 }
                 debug("$key: $value")
-                if(socket.isClosed()) return
+                if (socket.isClosed()) return
                 socket.getOutputStream().write("$key: $value\r\n".toByteArray())
             }
-            if(socket.isClosed()) return
+            if (socket.isClosed()) return
             socket.getOutputStream().write("\r\n".toByteArray())
             sendHeaders = true
         }
@@ -195,15 +195,15 @@ class HttpResponse(private var socket: Socket) : Loggable {
 
     fun write(p0: Int) {
         sendHeaders()
-        if(socket.isClosed()) return
+        if (socket.isClosed()) return
         socket.getOutputStream().write(p0)
     }
 
-    fun write(bytes:ByteArray){
-        write(bytes,0,bytes.size)
+    fun write(bytes: ByteArray) {
+        write(bytes, 0, bytes.size)
     }
 
-    fun write(bytes: ByteArray, offset:Int, length:Int) {
+    fun write(bytes: ByteArray, offset: Int, length: Int) {
         if (bytes.size > 0) {
             var c = offset
             while (c < length) {
@@ -233,13 +233,13 @@ class HttpResponse(private var socket: Socket) : Loggable {
     }
 
     private fun flush() {
-        if(socket.isClosed()) return
+        if (socket.isClosed()) return
         sendHeaders()
         socket.getOutputStream().flush()
     }
 
     fun close() {
-        if(socket.isClosed()) return
+        if (socket.isClosed()) return
         flush()
         socket.getOutputStream().close()
     }

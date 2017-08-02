@@ -14,8 +14,8 @@ class Log private constructor() {
         var DEBUG: Boolean = false
 
         private fun log(type: String, service: String, msg: String) {
-            var t:String  = ((System.currentTimeMillis()- init_timestamp).toDouble()/1000).toString()
-            if(t.split(".")[1].length<3) t+=0
+            var t: String = ((System.currentTimeMillis() - init_timestamp).toDouble() / 1000).toString()
+            if (t.split(".")[1].length < 3) t += 0
             println("[$t][$type][$service] $msg")
         }
 

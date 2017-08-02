@@ -7,7 +7,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.net.Socket
-import java.nio.charset.Charset
 import java.nio.file.Files
 import java.util.*
 
@@ -19,7 +18,7 @@ class HttpServer(private var port: Int) : Server(port), Loggable, ServletListene
         private var www_html_home: File = File("${www_home}/html")
         private var servlets_src_home: File = File("${www_home}/servlets/src")
         private var servlets_bin_home: File = File("${www_home}/servlets/bin")
-        private var servlets:Hashtable<String,HttpServlet> = Hashtable<String,HttpServlet>()
+        private var servlets: Hashtable<String, HttpServlet> = Hashtable<String, HttpServlet>()
 
         init {
             www_home.mkdirs()
@@ -29,9 +28,9 @@ class HttpServer(private var port: Int) : Server(port), Loggable, ServletListene
             register(HelloWorldServlet())
         }
 
-        fun register(servlet:HttpServlet){
-            if(!servlets.containsKey(servlet.name()))
-                servlets.put(servlet.name(),servlet)
+        fun register(servlet: HttpServlet) {
+            if (!servlets.containsKey(servlet.name()))
+                servlets.put(servlet.name(), servlet)
             else throw IllegalAccessException("HttpServlet ${servlet.name()} already registered")
         }
 
@@ -67,26 +66,26 @@ class HttpServer(private var port: Int) : Server(port), Loggable, ServletListene
 
     override fun onServletRequire(req: HttpRequest, res: HttpResponse) {
         info("[${req.method()}] ${req.path()}")
-        var sp:List<String> = req.path().split("/")
+        var sp: List<String> = req.path().split("/")
 
-        if(sp.size>=2 && sp[1].equals("servlet")){
-            var sn:String? = null
-            if(sp.size>=3){
+        if (sp.size >= 2 && sp[1].equals("servlet")) {
+            var sn: String? = null
+            if (sp.size >= 3) {
                 sn = sp[2]
-                var hs:HttpServlet? = servlets.get(sn)
-                if(hs!=null){
-                    hs.service(req,res)
+                var hs: HttpServlet? = servlets.get(sn)
+                if (hs != null) {
+                    hs.service(req, res)
                     return
                 }
                 res.redirect("/servlet")
                 return
             }
-            var list:String = ""
-            if(servlets.size>0){
-                for(name in servlets.keys()){
-                    list +="<a href=/servlet/$name>$name</a><br>"
+            var list: String = ""
+            if (servlets.size > 0) {
+                for (name in servlets.keys()) {
+                    list += "<a href=/servlet/$name>$name</a><br>"
                 }
-            } else list="Not found installed servlets"
+            } else list = "Not found installed servlets"
             res.contentType("text/html")
             res.println("<html><head><title>Servlets</title></head><body><h2>Servlet</h2>$list</body></html>")
             res.close()
@@ -101,7 +100,7 @@ class HttpServer(private var port: Int) : Server(port), Loggable, ServletListene
             return
         }
         if (fl.isDirectory()) {
-            var fl2:File = File("$fl/index.htm")
+            var fl2: File = File("$fl/index.htm")
             if (fl2.isFile()) {
                 res.status(HttpResponse.STATUS_303_SEE_OTHER)
                 res.header("Location", "index.htm")
@@ -121,7 +120,7 @@ class HttpServer(private var port: Int) : Server(port), Loggable, ServletListene
         }
         var fin: FileInputStream = FileInputStream(fl)
         res.contentType(Files.probeContentType(fl.toPath()))
-        res.header("Content-Length",fl.length().toString())
+        res.header("Content-Length", fl.length().toString())
         var bf: ByteArray = kotlin.ByteArray(512)
         while (true) {
             var r: Int = fin.read(bf)

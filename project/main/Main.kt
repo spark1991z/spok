@@ -17,7 +17,7 @@ class Main private constructor() : Loggable {
         var PROJECT_NAME: String = "Spok"
         var VERSION_CORE: Double = 0.8
         var VERSION_CODE: Int = 2
-        var VERSION_BUILD: Double = 201.6
+        var VERSION_BUILD: Double = 203.9
         var SYSTEM_OS_NAME: String = System.getProperty("os.name")
         var SYSTEM_OS_ARCH: String = System.getProperty("os.arch")
 
@@ -34,8 +34,7 @@ class Main private constructor() : Loggable {
         }
     }
 
-
-    private var ws:Server? = null
+    private var ws: Server? = null
 
     override fun toString(): String {
         return "$PROJECT_NAME $VERSION_CORE.$VERSION_CODE-$VERSION_BUILD ($SYSTEM_OS_NAME, $SYSTEM_OS_ARCH)"
@@ -43,7 +42,7 @@ class Main private constructor() : Loggable {
 
     fun start() {
         info("Starting services...")
-        if(ws==null){
+        if (ws == null) {
             ws = HttpServer(9999);
             ws!!.start()
         }
@@ -51,7 +50,7 @@ class Main private constructor() : Loggable {
 
     fun stop() {
         info("Stoping services...")
-        if(ws!!.runnable()){
+        if (ws!!.runnable()) {
             ws!!.stop();
             ws = null;
         }
