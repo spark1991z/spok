@@ -38,7 +38,7 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
     }
 
     private var method: String? = null
-    private var path: String? = null
+    private var path: String = "/"
     private var ready: Boolean = true
 
 
@@ -212,7 +212,7 @@ class HttpRequest(private var socket: Socket, private var res: HttpResponse) : L
         return method
     }
 
-    fun path(): String? {
+    fun path(): String {
         return path
     }
 

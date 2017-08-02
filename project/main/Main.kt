@@ -13,13 +13,13 @@ class Main private constructor() : Loggable {
     companion object {
 
         private var main: Main? = null
-        internal var PROJECT_NAME: String = "Spok"
-        internal var VERSION_CORE: Double = 0.8
-        internal var VERSION_CODE: Int = 2
-        internal var VERSION_BUILD: Double = 121.6
-        internal var RZD: String = "------------------------------"
-        internal var SYSTEM_OS_NAME: String = System.getProperty("os.name")
-        internal var SYSTEM_OS_ARCH: String = System.getProperty("os.arch")
+        private var RZD: String = "------------------------------"
+        var PROJECT_NAME: String = "Spok"
+        var VERSION_CORE: Double = 0.8
+        var VERSION_CODE: Int = 2
+        var VERSION_BUILD: Double = 201.6
+        var SYSTEM_OS_NAME: String = System.getProperty("os.name")
+        var SYSTEM_OS_ARCH: String = System.getProperty("os.arch")
 
         @JvmStatic fun instance(): Main? {
             return main
@@ -29,7 +29,7 @@ class Main private constructor() : Loggable {
             if (main != null) return
             main = Main()
             println("${System.currentTimeMillis()}\n$RZD\n$main\n$RZD")
-            Log.DEBUG = true
+            Log.DEBUG = false
             main!!.start()
         }
     }

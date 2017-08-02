@@ -132,6 +132,12 @@ class HttpResponse(private var socket: Socket) : Loggable {
 
     }
 
+    fun redirect(path:String){
+        status(HttpResponse.STATUS_303_SEE_OTHER)
+        header("Location","$path")
+        close()
+    }
+
     fun connection(connection: Int) {
         if (connection_names.containsKey(connection))
             header("Connection", "${connection_names.get(connection)}", false)
