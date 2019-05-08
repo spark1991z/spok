@@ -1,27 +1,3 @@
-package project.net.http.servlet
-
-import project.net.http.HttpRequest
-import project.net.http.HttpResponse
-import project.net.http.HttpServlet
-
-class HelloWorldServlet() : HttpServlet("hw") {
-
-    override fun doPost(req: HttpRequest, res: HttpResponse, servletPath: String) {
-        doGetOrPost(req, res, servletPath)
-    }
-
-    override fun doPut(req: HttpRequest, res: HttpResponse, servletPath: String) {
-    }
-
-    override fun doHead(req: HttpRequest, res: HttpResponse, servletPath: String) {
-    }
-
-    override fun doGet(req: HttpRequest, res: HttpResponse, servletPath: String) {
-        doGetOrPost(req, res, servletPath)
-    }
-
-    private fun doGetOrPost(req: HttpRequest, res: HttpResponse, servletPath: String) {
-        res.println("Hello world!")
-        res.close()
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:71651f48dcf3cf3cad42361b2ab5d528e67d2379cb86cae053048d8925bb83c8
+size 792

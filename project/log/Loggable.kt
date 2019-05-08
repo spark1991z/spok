@@ -1,19 +1,3 @@
-package project.log
-
-/**
- * @author spark1991z
- */
-interface Loggable {
-
-    fun info(msg: String) {
-        Log.info(javaClass.simpleName, msg)
-    }
-
-    fun debug(msg: String) {
-        Log.debug(javaClass.simpleName, msg)
-    }
-
-    fun error(msg: String) {
-        Log.error(javaClass.simpleName, msg)
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:b76b65c06991c0716ceb17d0c86e1de1876fc388bbb0f5e31dea776d8bcc6216
+size 314
